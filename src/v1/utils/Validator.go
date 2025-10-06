@@ -8,32 +8,26 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Pahappa-LTD/EgoSmsGoSDK/src/v1/models"
+	"github.com/Pahappa-LTD/CommsGoSDK/src/v1/models"
 )
 
-type EgoSmsSDKInterface interface {
+type CommsSdkInterface interface {
 	GetApiKey() string
-	GetUsername() string
-	GetPassword() string
-	SetAuthenticated(bool)
+	GetUserName() string
+	SetAuthenticated()
 	GetApiURL() string
 }
 
-func ValidateCredentials(sdk EgoSmsSDKInterface) (bool, error) {
+func ValidateCredentials(sdk CommsSdkInterface) (bool, error) {
 	if sdk == nil {
-		return false, errors.New("EgoSmsSDK instance cannot be null")
+		return false, errors.New("CommsSDK instance cannot be null")
 	}
 
-	isApiKey := true
-	if sdk.GetApiKey() == "" {
-		if sdk.GetPassword() == "" || sdk.GetUsername() == "" {
-			return false, errors.New("either API Key or Username and Password must be provided")
-		} else {
-			isApiKey = false
-		}
+	if sdk.GetApiKey() == "" || sdk.GetUserName() == "" {
+		return false, errors.New("either API Key or Username must be provided")
 	}
 
-	if !isValidCredential(sdk, isApiKey) {
+	if !isValidCredential(sdk) {
 		fmt.Println("                                                      _                    ")
 		fmt.Println("  /\\     _|_ |_   _  ._ _|_ o  _  _. _|_ o  _  ._    |_ _. o |  _   _| | |")
 		fmt.Println(" /--\\ |_| |_ | | (/_ | | |_ | (_ (_|  |_ | (_) | |   | (_| | | (/_ (_| o o ")
@@ -42,16 +36,16 @@ func ValidateCredentials(sdk EgoSmsSDKInterface) (bool, error) {
 		return false, errors.New("credentials validation failed")
 	}
 
-	fmt.Println("Validated using an api key")
-	fmt.Println()
-	sdk.SetAuthenticated(true)
+	fmt.Println("Credentials validated successfully.")
+	fmt.Println("Validated using basic auth")
+	sdk.SetAuthenticated()
 	return true, nil
 }
 
-func isValidCredential(sdk EgoSmsSDKInterface, isApiKey bool) bool {
+func isValidCredential(sdk CommsSdkInterface) bool {
 	apiRequest := models.ApiRequest{}
 	apiRequest.Method = "Balance"
-	apiRequest.Userdata = models.UserData{Username: sdk.GetUsername(), Password: sdk.GetPassword()}
+	apiRequest.Userdata = models.UserData{UserName: sdk.GetUserName(), ApiKey: sdk.GetApiKey()}
 
 	jsonBody, err := json.Marshal(apiRequest)
 	if err != nil {

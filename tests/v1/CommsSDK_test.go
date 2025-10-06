@@ -1,16 +1,17 @@
 package v1_test
 
 import (
+	"fmt"
 	"testing"
 
-	v1 "github.com/Pahappa-LTD/EgoSmsGoSDK/src/v1"
-	"github.com/Pahappa-LTD/EgoSmsGoSDK/src/v1/models"
+	v1 "github.com/Pahappa-LTD/CommsGoSDK/src/v1"
+	"github.com/Pahappa-LTD/CommsGoSDK/src/v1/models"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSendSMSToSingleNumber(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("aganisandbox", "SandBox")
+	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
 	assert.NoError(t, err)
 
 	success, err := sdk.SendSMS("+256772123456", "Test message")
@@ -20,7 +21,7 @@ func TestSendSMSToSingleNumber(t *testing.T) {
 
 func TestSendSMSToMultipleNumbers(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("aganisandbox", "SandBox")
+	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
 	assert.NoError(t, err)
 
 	numbers := []string{"+256772123456", "0772123457"}
@@ -31,16 +32,18 @@ func TestSendSMSToMultipleNumbers(t *testing.T) {
 
 func TestSendSMSWithShortNumberLength(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("aganisandbox", "SandBox")
+	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
 	assert.NoError(t, err)
 
-	_, err = sdk.SendSMS("123", "Test message")
+	res, err := sdk.QuerySendSMS("123", "Test message", "EgoSMS", models.HIGHEST)
 	assert.Error(t, err)
+
+	fmt.Println(res)
 }
 
 func TestSendSMSWithCustomMessagePriority(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("aganisandbox", "SandBox")
+	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
 	assert.NoError(t, err)
 
 	success, err := sdk.SendSMSWithPriority("+256772123456", "Test message", models.LOW)
@@ -56,7 +59,7 @@ func TestSendSMSWithInvalidCredentials(t *testing.T) {
 
 func TestCheckBalanceAfterSendingSMS(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("aganisandbox", "SandBox")
+	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
 	assert.NoError(t, err)
 
 	balanceBefore, err := sdk.GetBalance()
@@ -68,5 +71,5 @@ func TestCheckBalanceAfterSendingSMS(t *testing.T) {
 	balanceAfter, err := sdk.GetBalance()
 	assert.NoError(t, err)
 
-	assert.Less(t, balanceAfter, balanceBefore)
+	assert.Less(t, *balanceAfter, *balanceBefore)
 }

@@ -3,8 +3,9 @@ package models
 type ApiResponse struct {
     Status              ApiResponseCode `json:"Status"`
     Message             string          `json:"Message"`
-    Cost                float64         `json:"Cost"`
+    Cost                *int            `json:"Cost"`
+    Currency            *string         `json:"Currency"`
     MessageFollowUpCode string          `json:"MsgFollowUpUniqueCode"`
-    Balance             string          `json:"Balance"`
+    Balance             *float64        `json:"Balance"`
 }
 
