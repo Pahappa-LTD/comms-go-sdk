@@ -4,14 +4,17 @@ import (
 	"fmt"
 	"testing"
 
-	v1 "github.com/Pahappa-LTD/CommsGoSDK/src/v1"
-	"github.com/Pahappa-LTD/CommsGoSDK/src/v1/models"
+	"github.com/Pahappa-LTD/comms-go-sdk/src/v1"
+	"github.com/Pahappa-LTD/comms-go-sdk/src/v1/models"
 	"github.com/stretchr/testify/assert"
 )
 
+var username = "sandbox"
+var password = "sandbox35"
+
 func TestSendSMSToSingleNumber(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
+	sdk, err := v1.Authenticate(username, password)
 	assert.NoError(t, err)
 
 	success, err := sdk.SendSMS("+256772123456", "Test message")
@@ -21,7 +24,7 @@ func TestSendSMSToSingleNumber(t *testing.T) {
 
 func TestSendSMSToMultipleNumbers(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
+	sdk, err := v1.Authenticate(username, password)
 	assert.NoError(t, err)
 
 	numbers := []string{"+256772123456", "0772123457"}
@@ -32,7 +35,7 @@ func TestSendSMSToMultipleNumbers(t *testing.T) {
 
 func TestSendSMSWithShortNumberLength(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
+	sdk, err := v1.Authenticate(username, password)
 	assert.NoError(t, err)
 
 	res, err := sdk.QuerySendSMS("123", "Test message", "EgoSMS", models.HIGHEST)
@@ -43,7 +46,7 @@ func TestSendSMSWithShortNumberLength(t *testing.T) {
 
 func TestSendSMSWithCustomMessagePriority(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
+	sdk, err := v1.Authenticate(username, password)
 	assert.NoError(t, err)
 
 	success, err := sdk.SendSMSWithPriority("+256772123456", "Test message", models.LOW)
@@ -59,7 +62,7 @@ func TestSendSMSWithInvalidCredentials(t *testing.T) {
 
 func TestCheckBalanceAfterSendingSMS(t *testing.T) {
 	v1.UseSandBox()
-	sdk, err := v1.Authenticate("agabu-idaniel", "dcfa634d7936ec699a3b26f6cd924801b09b285a31949f99")
+	sdk, err := v1.Authenticate(username, password)
 	assert.NoError(t, err)
 
 	balanceBefore, err := sdk.GetBalance()

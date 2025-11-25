@@ -3,7 +3,7 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/Pahappa-LTD/CommsGoSDK/src/v1/utils"
+	"github.com/Pahappa-LTD/comms-go-sdk/src/v1/utils"
 	"github.com/stretchr/testify/assert"
 )
 

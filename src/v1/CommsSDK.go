@@ -10,11 +10,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Pahappa-LTD/CommsGoSDK/src/v1/models"
-	"github.com/Pahappa-LTD/CommsGoSDK/src/v1/utils"
+	"github.com/Pahappa-LTD/comms-go-sdk/src/v1/models"
+	"github.com/Pahappa-LTD/comms-go-sdk/src/v1/utils"
 )
 
-var API_URL = "http://176.58.101.43:8080/communications/api/v1/json/"
+var API_URL = "https://comms.egosms.co/api/v1/json/"
 
 type CommsSDK struct {
 	apiKey          string
@@ -60,11 +60,11 @@ func (sdk *CommsSDK) SendSMSWithPriority(numbers interface{}, message string, pr
 }
 
 func UseSandBox() {
-	API_URL = "http://176.58.101.43:8080/communications/api/v1/json"
+	API_URL = "https://comms-test.pahappa.net/api/v1/json"
 }
 
 func UseLiveServer() {
-	API_URL = "http://176.58.101.43:8080/communications/api/v1/json"
+	API_URL = "https://comms.egosms.co/api/v1/json"
 }
 
 func Authenticate(userName string, apiKey string) (*CommsSDK, error) {
@@ -140,6 +140,7 @@ func (sdk *CommsSDK) QuerySendSMS(numbers interface{}, message string, senderId 
 		return nil, errors.New("numbers list cannot be empty")
 	}
 
+	message = strings.TrimSpace(message)
 	if message == "" {
 		return nil, errors.New("message cannot be empty")
 	}
@@ -148,7 +149,8 @@ func (sdk *CommsSDK) QuerySendSMS(numbers interface{}, message string, senderId 
 		return nil, errors.New("message cannot be a single character")
 	}
 
-	if strings.TrimSpace(senderId) == "" {
+	senderId = strings.TrimSpace(senderId)
+	if senderId == "" {
 		senderId = sdk.senderId
 	}
 

@@ -8,7 +8,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Pahappa-LTD/CommsGoSDK/src/v1/models"
+	"github.com/Pahappa-LTD/comms-go-sdk/src/v1/models"
 )
 
 type CommsSdkInterface interface {
