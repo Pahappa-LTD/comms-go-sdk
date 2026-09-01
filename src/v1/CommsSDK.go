@@ -194,6 +194,7 @@ func (sdk *CommsSDK) QuerySendSMSFull(numbers interface{}, message string, sende
 		Method:      "SendSms",
 		Userdata:    models.UserData{UserName: sdk.userName, ApiKey: sdk.apiKey},
 		MessageData: messageModels,
+		WalletType:  models.Local,
 	}
 
 	jsonBody, err := json.Marshal(apiRequest)
@@ -225,8 +226,18 @@ func (sdk *CommsSDK) QuerySendSMSFull(numbers interface{}, message string, sende
 	return &apiResponse, nil
 }
 
-// QueryBalance is the same as GetBalance but returns the full ApiResponse object
+// QueryBalance is the same as GetBalance but returns the full ApiResponse object.
+// Queries the Local wallet; use QueryBalanceFull to query a specific wallet.
 func (sdk *CommsSDK) QueryBalance() (*models.ApiResponse, error) {
+	return sdk.QueryBalanceFull(models.Local)
+}
+
+// QueryBalanceFull is the same as QueryBalance but lets you specify which wallet to query.
+func (sdk *CommsSDK) QueryBalanceFull(walletType models.WalletType) (*models.ApiResponse, error) {
+	if walletType == "" {
+		walletType = models.Local
+	}
+
 	if !sdk.isAuthenticated {
 		fmt.Fprintf(os.Stderr, "SDK is not authenticated. Please authenticate before performing actions.\n")
 		fmt.Fprintf(os.Stderr, "Attempting to re-authenticate with provided credentials...\n")
@@ -238,8 +249,9 @@ func (sdk *CommsSDK) QueryBalance() (*models.ApiResponse, error) {
 	}
 
 	apiRequest := models.ApiRequest{
-		Method:   "Balance",
-		Userdata: models.UserData{UserName: sdk.userName, ApiKey: sdk.apiKey},
+		Method:     "Balance",
+		Userdata:   models.UserData{UserName: sdk.userName, ApiKey: sdk.apiKey},
+		WalletType: walletType,
 	}
 
 	jsonBody, err := json.Marshal(apiRequest)
@@ -267,8 +279,14 @@ func (sdk *CommsSDK) QueryBalance() (*models.ApiResponse, error) {
 	return &apiResponse, nil
 }
 
+// GetBalance returns the Local wallet balance; use GetBalanceFull to query a specific wallet.
 func (sdk *CommsSDK) GetBalance() (*float64, error) {
-	response, err := sdk.QueryBalance()
+	return sdk.GetBalanceFull(models.Local)
+}
+
+// GetBalanceFull is the same as GetBalance but lets you specify which wallet to query.
+func (sdk *CommsSDK) GetBalanceFull(walletType models.WalletType) (*float64, error) {
+	response, err := sdk.QueryBalanceFull(walletType)
 	if err != nil {
 		return nil, err
 	}

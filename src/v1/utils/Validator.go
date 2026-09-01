@@ -46,6 +46,7 @@ func isValidCredential(sdk CommsSdkInterface) bool {
 	apiRequest := models.ApiRequest{}
 	apiRequest.Method = "Balance"
 	apiRequest.Userdata = models.UserData{UserName: sdk.GetUserName(), ApiKey: sdk.GetApiKey()}
+	apiRequest.WalletType = models.Local
 
 	jsonBody, err := json.Marshal(apiRequest)
 	if err != nil {
