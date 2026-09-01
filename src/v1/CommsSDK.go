@@ -48,11 +48,11 @@ func (sdk *CommsSDK) GetApiURL() string {
 }
 
 func (sdk *CommsSDK) SendSMS(numbers interface{}, message string) (bool, error) {
-	return sdk.SendSMSFull(numbers, message, sdk.senderId, models.HIGHEST)
+	return sdk.SendSMSFull(numbers, message, sdk.senderId, models.HIGH)
 }
 
 func (sdk *CommsSDK) SendSMSWithSenderId(numbers interface{}, message string, senderId string) (bool, error) {
-	return sdk.SendSMSFull(numbers, message, senderId, models.HIGHEST)
+	return sdk.SendSMSFull(numbers, message, senderId, models.HIGH)
 }
 
 func (sdk *CommsSDK) SendSMSWithPriority(numbers interface{}, message string, priority models.MessagePriority) (bool, error) {
@@ -89,7 +89,7 @@ func (sdk *CommsSDK) WithSenderId(senderId string) *CommsSDK {
 }
 
 func (sdk *CommsSDK) SendSMSFull(numbers interface{}, message string, senderId string, priority models.MessagePriority) (bool, error) {
-	apiResponse, err := sdk.QuerySendSMS(numbers, message, senderId, priority)
+	apiResponse, err := sdk.QuerySendSMSFull(numbers, message, senderId, priority)
 	if err != nil {
 		return false, err
 	}
@@ -114,8 +114,23 @@ func (sdk *CommsSDK) SendSMSFull(numbers interface{}, message string, senderId s
 	}
 }
 
-// QuerySendSMS is the same as SendSMSFull but returns the full ApiResponse object
-func (sdk *CommsSDK) QuerySendSMS(numbers interface{}, message string, senderId string, priority models.MessagePriority) (*models.ApiResponse, error) {
+// QuerySendSMS is the same as SendSMS but returns the full ApiResponse object
+func (sdk *CommsSDK) QuerySendSMS(numbers interface{}, message string) (*models.ApiResponse, error) {
+	return sdk.QuerySendSMSFull(numbers, message, sdk.senderId, models.HIGH)
+}
+
+// QuerySendSMSWithSenderId is the same as SendSMSWithSenderId but returns the full ApiResponse object
+func (sdk *CommsSDK) QuerySendSMSWithSenderId(numbers interface{}, message string, senderId string) (*models.ApiResponse, error) {
+	return sdk.QuerySendSMSFull(numbers, message, senderId, models.HIGH)
+}
+
+// QuerySendSMSWithPriority is the same as SendSMSWithPriority but returns the full ApiResponse object
+func (sdk *CommsSDK) QuerySendSMSWithPriority(numbers interface{}, message string, priority models.MessagePriority) (*models.ApiResponse, error) {
+	return sdk.QuerySendSMSFull(numbers, message, sdk.senderId, priority)
+}
+
+// QuerySendSMSFull is the same as SendSMSFull but returns the full ApiResponse object
+func (sdk *CommsSDK) QuerySendSMSFull(numbers interface{}, message string, senderId string, priority models.MessagePriority) (*models.ApiResponse, error) {
 	if !sdk.isAuthenticated {
 		fmt.Fprintf(os.Stderr, "SDK is not authenticated. Please authenticate before performing actions.\n")
 		fmt.Fprintf(os.Stderr, "Attempting to re-authenticate with provided credentials...\n")

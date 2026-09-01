@@ -38,7 +38,7 @@ func TestSendSMSWithShortNumberLength(t *testing.T) {
 	sdk, err := v1.Authenticate(username, apikey)
 	assert.NoError(t, err)
 
-	res, err := sdk.QuerySendSMS("123", "Test message", "EgoSMS", models.HIGHEST)
+	res, err := sdk.QuerySendSMSFull("123", "Test message", "EgoSMS", models.HIGHEST)
 	assert.Error(t, err)
 
 	fmt.Println(res)
