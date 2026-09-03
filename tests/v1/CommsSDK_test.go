@@ -2,6 +2,7 @@ package v1_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/Pahappa-LTD/comms-go-sdk/src/v1"
@@ -9,8 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var username = "sandbox"
-var apikey = "sandbox35"
+var username = os.Getenv("COMMS_SANDBOX_USERNAME")
+var apikey = os.Getenv("COMMS_SANDBOX_API_KEY")
 
 func TestSendSMSToSingleNumber(t *testing.T) {
 	v1.UseSandBox()
