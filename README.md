@@ -1,20 +1,12 @@
-# Ego SMS sdk for Go
+# CommsSDK for Go
 
-**Version:** 1.1.0
+The Go SDK for sending SMS and querying balances via the EgoSMS Comms platform by Pahappa Limited.
 
-Example:
-```go
-sdk, err := v1.Authenticate("username", "password")
-
-success, err := sdk.SendSMS("+256772123456", "Test message to single number")
-
-numbers := []string{"+256772123456", "0772123457"}
-success, err := sdk.SendSMSWithSenderId(numbers, "Test message to many numbers", "MySenderID")
-
-// Same as SendSMS/SendSMSWithSenderId/SendSMSWithPriority, but returns the full ApiResponse
-response, err := sdk.QuerySendSMS("+256772123456", "Test message to single number")
-
-balance, err := sdk.GetBalance()
+```bash
+go get github.com/Pahappa-LTD/comms-go-sdk
 ```
 
-`SendSMS`/`QuerySendSMS` and their `WithSenderId`/`WithPriority` variants default to `models.HIGH` priority. Use `SendSMSFull`/`QuerySendSMSFull` to set both a custom sender ID and priority in one call.
+**Documentation:** see the [CommsSDK README](https://github.com/Pahappa-LTD/comms-sdk#language-guides) and expand the **Go** guide.
+It covers installation, usage, errors and logging for every supported language.
+
+Licensed under the [MIT License](https://github.com/Pahappa-LTD/comms-sdk/blob/main/LICENSE).
